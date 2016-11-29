@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <Button
+            android:text="Load Only"
+            android:id="@+id/simple_placeholder_load"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:text="Simple Placeholder"
+            android:id="@+id/simple_placeholder_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:text="Image Placeholder"
+            android:id="@+id/image_placeholder_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:text="Custom Placeholder"
+            android:id="@+id/custom_placeholder_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="A lot of beuatiful Content Here!" />
+
+        <ViewStub
+            android:id="@+id/stub_custom_loading"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout="@layout/view_custom_loading"
+            />
+
+        <ViewStub
+            android:id="@+id/stub_error"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout="@layout/view_error" />
+
+        <ViewStub
+            android:id="@+id/stub_error_with_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout="@layout/view_error_with_image" />
+
+        <ViewStub
+            android:id="@+id/stub_loading"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout="@layout/view_loading" />
+
+    </FrameLayout>
+
+</LinearLayout>

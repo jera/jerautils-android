@@ -16,9 +16,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity android:name=".placeholders.PlaceholdersExample" />
         <activity android:name=".dialogs.DialogsExample" />
+        <activity android:name=".preferences.PreferencesExample"></activity>
     </application>
 
 </manifest>

@@ -18,7 +18,8 @@
         </activity>
         <activity android:name=".placeholders.PlaceholdersExample" />
         <activity android:name=".dialogs.DialogsExample" />
-        <activity android:name=".preferences.PreferencesExample"></activity>
+        <activity android:name=".preferences.PreferencesExample" />
+        <activity android:name=".paginations.PaginationExample"></activity>
     </application>
 
 </manifest>

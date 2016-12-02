@@ -22,8 +22,8 @@ import br.com.jera.jerautils.paginations.interfaces.PaginationInfo;
 
 public class Paginator extends RecyclerView.OnScrollListener implements DataSourceCallback {
 
-    public static final int DEFAULT_STARTING_PAGE = 1;
-    public static final int DEFAULT_PAGE_SIZE = 20;
+    protected final static int DEFAULT_STARTING_PAGE = 1;
+    protected final static int DEFAULT_PAGE_SIZE = 20;
 
     private final DataSource dataSource;
     private PaginationViewProvider viewProvider;
@@ -31,6 +31,7 @@ public class Paginator extends RecyclerView.OnScrollListener implements DataSour
     private Integer currentPage;
     private Integer pageSize;
     private boolean isLoading = false;
+    private boolean hasError = false;
 
     private Paginator(DataSource dataSource) {
         this.dataSource = dataSource;
@@ -54,13 +55,14 @@ public class Paginator extends RecyclerView.OnScrollListener implements DataSour
     private void paginate() {
         if (isLoading) return;
         isLoading = true;
+        hasError = false;
         ((PaginatedRecyclerViewAdapter) recyclerView.getAdapter()).setLoading(true);
         recyclerView.getAdapter().notifyDataSetChanged();
         dataSource.fetchData(currentPage, pageSize, this);
     }
 
     private boolean shouldRequestMore() {
-        if (isLoading) return false;
+        if (isLoading || hasError) return false;
         int visibleItemCount = recyclerView.getChildCount();
         int totalItemCount = recyclerView.getLayoutManager().getItemCount();
 
@@ -97,6 +99,23 @@ public class Paginator extends RecyclerView.OnScrollListener implements DataSour
         }
     }
 
+
+    @Override
+    public void onFailure(PaginationError paginationError, @Nullable PaginationInfo paginationInfo) {
+        isLoading = false;
+        hasError = true;
+        if (recyclerView.getAdapter() != null) {
+            ((PaginatedRecyclerViewAdapter) recyclerView.getAdapter())
+                    .setError(hasError, paginationError, new TryAgainCallback() {
+                        @Override
+                        public void tryAgain() {
+                            paginate();
+                        }
+                    });
+            recyclerView.getAdapter().notifyDataSetChanged();
+        }
+    }
+
     private void updatePaginationInfo(@Nullable PaginationInfo paginationInfo) {
         if (paginationInfo != null) {
             currentPage = paginationInfo.getNextPage();
@@ -124,11 +143,6 @@ public class Paginator extends RecyclerView.OnScrollListener implements DataSour
             ((PaginatedRecyclerViewAdapter) recyclerView.getAdapter()).addItems(items);
             recyclerView.getAdapter().notifyDataSetChanged();
         }
-    }
-
-    @Override
-    public void onFailure(PaginationError paginationError, @Nullable PaginationInfo paginationInfo) {
-        //todo: show loading error
     }
 
     public static PaginatorBuilder with(DataSource dataSource) {
@@ -198,6 +212,10 @@ public class Paginator extends RecyclerView.OnScrollListener implements DataSour
                 paginator.pageSize = DEFAULT_PAGE_SIZE;
             }
         }
+    }
+
+    public interface TryAgainCallback {
+        void tryAgain();
     }
 
 }

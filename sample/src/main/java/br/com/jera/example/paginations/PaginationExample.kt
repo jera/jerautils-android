@@ -14,6 +14,7 @@ import br.com.jera.jerautils.paginations.Paginator
 import br.com.jera.jerautils.paginations.adapters.BaseRecyclerViewAdapter
 import br.com.jera.jerautils.paginations.interfaces.DataSource
 import br.com.jera.jerautils.paginations.interfaces.DataSourceCallback
+import br.com.jera.jerautils.paginations.interfaces.PaginationError
 import br.com.jera.jerautils.paginations.interfaces.PaginationInfo
 import java.util.*
 
@@ -78,8 +79,25 @@ class PaginationExample : AppCompatActivity() {
         override fun fetchData(page: Int, pageSize: Int?, callback: DataSourceCallback<Thing>?) {
             Handler().postDelayed({
                 val paginatedThings = request(page, pageSize ?: 10)
-                callback?.onSuccess(paginatedThings.things, paginatedThings.paginationInfo)
+                if (Random().nextBoolean()) {
+                    callback?.onSuccess(paginatedThings.things, paginatedThings.paginationInfo)
+                } else {
+                    callback?.onFailure(createPaginationError(), null)
+                }
             }, 1500)
+        }
+
+        private fun createPaginationError(): PaginationError {
+            return object : PaginationError {
+                override fun getCause(): Exception {
+                    return Exception("Oh No Something went Wrong!!")
+                }
+
+                override fun getErrorMessage(): String {
+                    return cause.message?: "Damn!"
+                }
+
+            }
         }
 
         fun request(page: Int, requestedAmount: Int): PaginatedThings {

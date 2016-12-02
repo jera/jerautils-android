@@ -5,5 +5,6 @@ package br.com.jera.jerautils.paginations.interfaces;
  */
 public interface PaginationError {
     Exception getCause();
+
     String getErrorMessage();
 }

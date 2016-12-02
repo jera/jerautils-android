@@ -5,5 +5,5 @@ package br.com.jera.jerautils.paginations.interfaces;
  */
 
 public interface DataSource<T> {
-    void fetchData(int page, DataSourceCallback callback);
+    void fetchData(int page, Integer pageSize, DataSourceCallback<T> callback);
 }

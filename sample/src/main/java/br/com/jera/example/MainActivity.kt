@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import br.com.jera.example.dialogs.DialogsExample
+import br.com.jera.example.paginations.PaginationExample
 import br.com.jera.example.placeholders.PlaceholdersExample
 import br.com.jera.example.preferences.PreferencesExample
 
@@ -15,7 +16,8 @@ class MainActivity : AppCompatActivity() {
         val examples = listOf<Pair<String, Class<out Activity>>>(
                 "Placeholders" to PlaceholdersExample::class.java,
                 "Dialogs" to DialogsExample::class.java,
-                "Preferences" to PreferencesExample::class.java
+                "Preferences" to PreferencesExample::class.java,
+                "Pagination" to PaginationExample::class.java
         )
     }
 

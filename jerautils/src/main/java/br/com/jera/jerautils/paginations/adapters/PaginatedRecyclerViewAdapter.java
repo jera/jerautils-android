@@ -4,27 +4,30 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
+import java.util.List;
+
 /**
  * Created by daividsilverio on 30/11/16.
  */
 
-public class BasePaginatedRecyclerViewAdapter extends RecyclerView.Adapter {
+public class PaginatedRecyclerViewAdapter<T extends BaseRecyclerViewAdapter> extends RecyclerView.Adapter implements PaginatedAdapter {
 
     private static final int VIEW_TYPE_LOADING = Integer.MAX_VALUE / 2;
 
-    private final RecyclerView.Adapter wrappedAdapter;
+    private final T wrappedAdapter;
+    private final PaginationViewProvider provider;
     private boolean isLoading = false;
 
-    public BasePaginatedRecyclerViewAdapter(@NonNull RecyclerView.Adapter wrappedAdapter) {
+    public PaginatedRecyclerViewAdapter(@NonNull T wrappedAdapter, PaginationViewProvider provider) {
         super();
         this.wrappedAdapter = wrappedAdapter;
+        this.provider = provider;
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == VIEW_TYPE_LOADING) {
-            //call something to create a loading view
-            return null;
+            return provider.onCreateViewHolder(parent, viewType);
         } else {
             return wrappedAdapter.onCreateViewHolder(parent, viewType);
         }
@@ -32,8 +35,8 @@ public class BasePaginatedRecyclerViewAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if (isLoadingView(position)) {
-            //call something to
+        if (holder instanceof PaginationViewProvider) {
+            provider.onBindViewHolder(holder, position);
         } else {
             wrappedAdapter.onBindViewHolder(holder, position);
         }
@@ -41,7 +44,7 @@ public class BasePaginatedRecyclerViewAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        return wrappedAdapter.getItemCount();
+        return wrappedAdapter.getItemCount() + (isLoading ? 1 : 0);
     }
 
     @Override
@@ -58,6 +61,20 @@ public class BasePaginatedRecyclerViewAdapter extends RecyclerView.Adapter {
     }
 
     private int getLoadingViewPosition() {
-        return isLoading ? getItemCount() - 1 : -1;
+        return getItemCount() > 0 ? getItemCount() - 1 : 0;
+    }
+
+    public T getWrappedAdapter() {
+        return wrappedAdapter;
+    }
+
+    @Override
+    public void addItems(List items) {
+        wrappedAdapter.addItems(items);
+        notifyDataSetChanged();
+    }
+
+    public void setLoading(boolean loading) {
+        this.isLoading = loading;
     }
 }

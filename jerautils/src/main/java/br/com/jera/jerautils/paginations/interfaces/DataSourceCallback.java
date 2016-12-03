@@ -11,5 +11,6 @@ import java.util.List;
 
 public interface DataSourceCallback<T> {
     void onSuccess(@NonNull List<T> items, @Nullable PaginationInfo paginationInfo);
-    void onFailure(PaginationError paginationError, @Nullable PaginationInfo paginationInfo);
+
+    void onFailure(@NonNull PaginationError paginationError, @Nullable PaginationInfo paginationInfo);
 }

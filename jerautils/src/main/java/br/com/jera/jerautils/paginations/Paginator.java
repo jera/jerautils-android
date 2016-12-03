@@ -215,7 +215,7 @@ public class Paginator extends RecyclerView.OnScrollListener implements DataSour
     }
 
     public interface TryAgainCallback {
-        void tryAgain();
+        public void tryAgain();
     }
 
 }

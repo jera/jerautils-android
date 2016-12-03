@@ -29,23 +29,30 @@ class DialogsExample : AppCompatActivity() {
         findViewById(R.id.confirmation_dialog_button).setOnClickListener {
             Alerts.showDialog(this, alertConfiguration
                     .withActionText("Damn")
-                    .withCancelText(null).build(), confirmationCallback)
+                    .withCancelText(null)
+                    .build(),
+                    confirmationCallback)
         }
 
         findViewById(R.id.cancelable_dialog_button).setOnClickListener {
             Alerts.showDialog(this, alertConfiguration
                     .withActionText("Damn")
-                    .withCancelText("Noo").build(), confirmationCallback)
+                    .withCancelText("Noo")
+                    .build(),
+                    confirmationCallback)
         }
 
         findViewById(R.id.plain_snack).setOnClickListener {
             Alerts.showSnackBar(findViewById(R.id.root), alertConfiguration
-                    .withActionText(null).build(), null)
+                    .withActionText(null)
+                    .build(),
+                    null)
         }
 
         findViewById(R.id.action_snack).setOnClickListener {
             Alerts.showSnackBar(findViewById(R.id.root), alertConfiguration
-                    .withActionText("Stooppp!").build(),
+                    .withActionText("Stooppp!")
+                    .build(),
                     confirmationCallback
             )
         }

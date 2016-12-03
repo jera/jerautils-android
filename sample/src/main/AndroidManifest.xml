@@ -19,7 +19,8 @@
         <activity android:name=".placeholders.PlaceholdersExample" />
         <activity android:name=".dialogs.DialogsExample" />
         <activity android:name=".preferences.PreferencesExample" />
-        <activity android:name=".paginations.PaginationExample"></activity>
+        <activity android:name=".paginations.DefaultPaginationExample" />
+        <activity android:name=".paginations.CustomPaginationExample" />
     </application>
 
 </manifest>

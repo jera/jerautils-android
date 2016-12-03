@@ -18,6 +18,6 @@ public interface PaginationViewProvider<LVH extends RecyclerView.ViewHolder, EVH
 
     void onBindLoadingViewHolder(LVH holder);
 
-    void onBindErrorViewHolder(EVH holder, PaginationError position, Paginator.TryAgainCallback errorCallback);
+    void onBindErrorViewHolder(EVH holder, PaginationError error, Paginator.TryAgainCallback errorCallback);
 
 }

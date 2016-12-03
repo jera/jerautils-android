@@ -59,6 +59,7 @@ class PlaceholdersExample : AppCompatActivity() {
             when (placeholder) {
                 Placeholders.ERROR -> placeholdersManager.show(Placeholders.ERROR)
                         .configure("Simple Placeholder", "Try Again Bro", { doHeavyStuff(true, Placeholders.ERROR) })
+
                 Placeholders.ERROR_WITH_ICON -> placeholdersManager.show(Placeholders.ERROR_WITH_ICON)
                         .configure("Placeholder with Icon", "Try Again Bro", { doHeavyStuff(true, Placeholders.ERROR_WITH_ICON) }, R.drawable.ic_announcement_black_48dp)
             }

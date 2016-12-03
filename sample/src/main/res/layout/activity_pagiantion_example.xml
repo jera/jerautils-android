@@ -4,7 +4,7 @@
     android:id="@+id/activity_pagiantion_example"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="br.com.jera.example.paginations.PaginationExample">
+    tools:context="br.com.jera.example.paginations.DefaultPaginationExample">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"

@@ -32,7 +32,7 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:25.0.1'
 
     testCompile 'junit:junit:4.12'
-    compile project(':jerautils')
+    compile 'br.com.jera.jerautils-android:jerautils-android:0.1.0'
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     compile "org.jetbrains.anko:anko-sdk15:$anko_version"
 }

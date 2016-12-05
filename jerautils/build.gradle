@@ -1,4 +1,10 @@
+plugins {
+    id "com.jfrog.bintray" version "1.7.3"
+}
 apply plugin: 'com.android.library'
+apply plugin: 'maven-publish'
+
+project.version = '0.1.0'
 
 android {
     compileSdkVersion 25
@@ -8,7 +14,7 @@ android {
         minSdkVersion 16
         targetSdkVersion 25
         versionCode 1
-        versionName "1.0"
+        versionName project.version
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
@@ -21,6 +27,42 @@ android {
     }
 }
 
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+bintray {
+    user = properties.getProperty('bintray.user')
+    key = properties.getProperty('bintray.apikey')
+    println(user)
+    println(key)
+    publish = true
+    publications = ['maven']
+    pkg {
+        repo = 'jerautils-android'
+        name = 'jerautils-android'
+        //userOrg = 'jera'
+        version {
+            name = project.version
+            released = new Date()
+        }
+    }
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId 'br.com.jera.jerautils-android'
+            artifactId 'jerautils-android'
+            version project.version
+            artifact "$buildDir/outputs/aar/jerautils-release.aar"
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+}
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
@@ -28,6 +70,5 @@ dependencies {
     })
     compile "com.android.support:appcompat-v7:$support_version"
     compile "com.android.support:design:$support_version"
-    compile 'com.google.code.gson:gson:2.6.2'
     testCompile 'junit:junit:4.12'
 }

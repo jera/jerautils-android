@@ -162,10 +162,11 @@ public class Preferences {
         String toJson(Object obj);
 
         <T> T fromJson(@NonNull String obj, @NonNull Class<T> clazz);
+
         <T> T fromJson(@NonNull String obj, @NonNull Type type);
     }
 
-    interface ContextProvider {
+    public interface ContextProvider {
         Context getContext();
     }
 }

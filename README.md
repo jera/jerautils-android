@@ -69,9 +69,69 @@ Then use it as you would regularly, but with the Preferences Facade:
 
 ### <a id="alerts"></a>Dialogs, Toasts, Snackbars
 Use the ```Alerts``` facade to create Dialogs, Snackbars and Toasts together with
-a ```AlertConfiguration``` a ```ConfirmationCallback``` 
-```java
+an ```AlertConfiguration``` a ```ConfirmationCallback```
+```AlertConfiguration.Builder``` is immutable and can be used to create default Configurations to
+use throughout the code
 
+Create an AlertConfiguration.Builder instance:
+```java
+AlertConfiguration.Builder builder = AlertConfiguration.Builder()
+                .withTitle("Alerta de Voo")
+                .withMessage("Você irá voar em breve")
+                .withActionText("Damn")
+                .withCancelText("Noo")
+                .withDuration(AlertConfiguration.LENGTH_SHORT)
+```
+
+Then use it with the Facades:
+
+To create a dialog without the cancellation button:
+```java
+Alerts.showDialog(context, builder
+                    .withCancelText(null)
+                    .build(),
+                    new NotificationCallback() {
+                                @Override
+                                public void onConfirm() {
+                                     //todo: do something
+                                }
+                            });
+```
+
+To create a dialog with the cancellation button:
+```java
+Alerts.showDialog(context, builder.build(),
+                    new ConfirmationCallback() {
+                                @Override
+                                public void onConfirm() {
+                                    //todo: do something
+                                }
+
+                                @Override
+                                public void onRefuse() {
+                                    //todo: do something
+                                }
+                            });
+```
+
+To create a simple snackbar, without an action button:
+```java
+Alerts.showSnackBar(findViewById(R.id.root), builder
+                    .withActionText(null)
+                    .build(), null);
+```
+
+To create a snackbar with the action button:
+```java
+Alerts.showSnackBar(findViewById(R.id.root), builder
+                    .withActionText("Stooppp!")
+                    .build(),
+                    new NotificationCallback() {
+                        @Override
+                        public void onConfirm() {
+                            //todo: do something
+                        }
+                     });
 ```
 
 ### <a id="pagination"></a> Pagination

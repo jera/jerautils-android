@@ -43,6 +43,7 @@ class DialogsExample : AppCompatActivity() {
 
         findViewById(R.id.plain_snack).setOnClickListener {
             Alerts.showSnackBar(findViewById(R.id.root), alertConfiguration
+                    .withActionText(null)
                     .build(),
                     null)
         }

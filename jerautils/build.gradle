@@ -38,7 +38,7 @@ bintray {
     publish = true
     publications = ['maven']
     pkg {
-        repo = 'jerautils-android'
+        repo = 'maven'
         name = 'jerautils-android'
         //userOrg = 'jera'
         version {

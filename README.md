@@ -1,7 +1,7 @@
 # JeraUtils - Android
-JeraUtils para Android é uma coleção de pequenos utilitários criados com o intuito de reduzir
-boilerplate no nosso desenvolvimento diário de aplicativos, tails como placeholders para erros,
-carregamento de telas, alertas, preferences e paginação.
+JeraUtils for Android is a collection of simple utils created to help reduce the amount of
+boilerplate during our daily app development, such as placeholders for errors, screen's loadings,
+alerts and preferences.
 
 ## How to Install
 Add this repository (Temporary) to your root build.gradle
@@ -18,39 +18,51 @@ Add this to your dependencies
 compile 'br.com.jera.jerautils-android:jerautils-android:0.1.0'
 ```
 
-## Dependências
+## Dependencies
 ```groovy
 compile "com.android.support:design:x.y.z"
 ```
 
-## Adicionando credenciais de deploy
+## Features
 
-Antes de poder fazer o deploy da lib, é necessário adicionar as credenciais de um usuário do bintray
-pertencente à organização jera.
-https://bintray.com/jera
+### Preferences
+    Init Preferences once with a ContextProvider and a JsonConverter in
+    your application, activity, whatever:
+```java
+    Preferences.init(new Preferences.ContextProvider() {
+                @Override
+                public Context getContext() {
+                    return this; //supposing you are inside your application class
+                }
+            }, new Preferences.JsonConverter() {
+                @Override
+                public String toJson(Object obj) {
+                    return gson.toJson(obj);
+                }
 
-Abra (ou crie) um arquivo chamado local.properties no diretório root do projeto.
-Adicione as seguintes linhas:
+                @Override
+                public <T> T fromJson(@NonNull String obj, @NonNull Class<T> clazz) {
+                    return gson.fromJson(obj, clazz);
+                }
 
+                @Override
+                public <T> T fromJson(@NonNull String obj, @NonNull Type type) {
+                    return gson.fromJson(obj, type);
+                }
+            });
 ```
-bintray.user=BINTRAY_USERNAME
-bintray.apikey=BINTRAY_API_KEY
+
+    Then use it as you would regularly, but with the Preferences Facade:
+```java
+    Preferences.putBoolean("BOOL_KEY", true);
+    Preferences.putFloat("FLOAT_KEY", 0.4f);
+    Preferences.putInt("INT_KEY", 1);
+    Preferences.putLong("LONG_KEY", 10);
+    Preferences.putString("STRING_KEY", "String");
+    Preferences.putObject("SERIALIZABLE_OBJECT", new Date());
 ```
 
-Subtitua o BINTRAY_USERNAME e o BINTRAY_API_KEY pelo seu nome de usuário e api key do bintray.
-A api key pode ser encontrada em:
-https://bintray.com/profile/edit
 
-## Deploy do projeto
+### Dialogs, Toasts, Snackbars
 
-O deploy para o bintray é feito usando o plugin oficial para gradle:
-https://github.com/bintray/gradle-bintray-plugin
-
-Para gerar uma nova versão:
-
-1. Abra o arquivo build.gradle e troque o valor do **project.version** para a versão desejada.
-2. Abra o terminal na pasta do projeto e insira:
-
-```bash
-$ ./gradlew jerautils:clean jerautils:assembleRelease bintrayUpload
-```
+### Pagination

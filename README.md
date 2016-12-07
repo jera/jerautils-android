@@ -8,17 +8,20 @@ Add this repository (Temporary) to your root build.gradle
 ```groovy
 repositories {
         maven {
-            url "http://dl.bintray.com/daividssilverio/jerautils-android"
+            url "http://dl.bintray.com/daividssilverio/maven"
         }
     }
 ```
 
 Add this to your dependencies
 ```groovy
-compile 'br.com.jera.jerautils-android:jerautils-android:0.1.0'
+compile 'br.com.jera.jerautils-android:jerautils-android:0.1.1'
 ```
 
 ## Dependencies
+
+If you use Snackbars:
+
 ```groovy
 compile "com.android.support:design:x.y.z"
 ```
@@ -114,6 +117,8 @@ Alerts.showDialog(context, builder.build(),
                             });
 ```
 
+
+<
 To create a simple snackbar, without an action button:
 ```java
 Alerts.showSnackBar(findViewById(R.id.root), builder

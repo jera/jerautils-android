@@ -5,7 +5,7 @@ apply plugin: 'kotlin-android'
 repositories {
     jcenter()
     maven {
-        url "http://dl.bintray.com/daividssilverio/jerautils-android"
+        url "http://dl.bintray.com/daividssilverio/maven"
     }
 }
 

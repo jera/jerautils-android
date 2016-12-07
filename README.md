@@ -24,10 +24,13 @@ compile "com.android.support:design:x.y.z"
 ```
 
 ## Features
+* [Preferences](#preferences)
+* [Dialogs, Toasts, Snackbars](#alerts)
+* [Pagination](#pagination)
 
-### Preferences
-    Init Preferences once with a ContextProvider and a JsonConverter in
-    your application, activity, whatever:
+### <a id="preferences"></a> Preferences
+Init Preferences once with a ContextProvider and a JsonConverter in
+your application, activity, whatever:
 ```java
     Preferences.init(new Preferences.ContextProvider() {
                 @Override
@@ -52,7 +55,8 @@ compile "com.android.support:design:x.y.z"
             });
 ```
 
-    Then use it as you would regularly, but with the Preferences Facade:
+
+Then use it as you would regularly, but with the Preferences Facade:
 ```java
     Preferences.putBoolean("BOOL_KEY", true);
     Preferences.putFloat("FLOAT_KEY", 0.4f);
@@ -63,6 +67,11 @@ compile "com.android.support:design:x.y.z"
 ```
 
 
-### Dialogs, Toasts, Snackbars
+### <a id="alerts"></a>Dialogs, Toasts, Snackbars
+Use the ```Alerts``` facade to create Dialogs, Snackbars and Toasts together with
+a ```AlertConfiguration``` a ```ConfirmationCallback``` 
+```java
 
-### Pagination
+```
+
+### <a id="pagination"></a> Pagination

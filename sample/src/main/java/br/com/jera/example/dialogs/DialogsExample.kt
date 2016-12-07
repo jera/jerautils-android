@@ -18,6 +18,8 @@ class DialogsExample : AppCompatActivity() {
         val alertConfiguration = AlertConfiguration.Builder()
                 .withTitle("Alerta de Voo")
                 .withMessage("Você irá voar em breve")
+                .withActionText("Damn")
+                .withCancelText("Noo")
                 .withDuration(AlertConfiguration.LENGTH_SHORT)
 
         val confirmationCallback = object : ConfirmationCallback {
@@ -28,7 +30,6 @@ class DialogsExample : AppCompatActivity() {
 
         findViewById(R.id.confirmation_dialog_button).setOnClickListener {
             Alerts.showDialog(this, alertConfiguration
-                    .withActionText("Damn")
                     .withCancelText(null)
                     .build(),
                     confirmationCallback)
@@ -36,15 +37,12 @@ class DialogsExample : AppCompatActivity() {
 
         findViewById(R.id.cancelable_dialog_button).setOnClickListener {
             Alerts.showDialog(this, alertConfiguration
-                    .withActionText("Damn")
-                    .withCancelText("Noo")
                     .build(),
                     confirmationCallback)
         }
 
         findViewById(R.id.plain_snack).setOnClickListener {
             Alerts.showSnackBar(findViewById(R.id.root), alertConfiguration
-                    .withActionText(null)
                     .build(),
                     null)
         }

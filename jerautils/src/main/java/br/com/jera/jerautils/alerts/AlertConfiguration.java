@@ -28,61 +28,83 @@ public class AlertConfiguration {
     private AlertConfiguration() {
     }
 
+    private AlertConfiguration(AlertConfiguration alertConfiguration) {
+        this();
+        this.title = alertConfiguration.title;
+        this.message = alertConfiguration.message;
+        this.actionText = alertConfiguration.actionText;
+        this.cancelText = alertConfiguration.cancelText;
+        this.duration = alertConfiguration.duration;
+    }
+
     public static class Builder {
 
-        private AlertConfiguration configuration;
+        private final AlertConfiguration configuration;
 
         public Builder() {
             configuration = new AlertConfiguration();
         }
 
+        private Builder(AlertConfiguration configuration) {
+            this.configuration = new AlertConfiguration(configuration);
+        }
+
         public AlertConfiguration build() {
-            return configuration;
+            return new AlertConfiguration(configuration);
         }
 
         public Builder withTitle(String title) {
-            configuration.title = title;
-            return this;
+            AlertConfiguration newConfiguration = new AlertConfiguration(configuration);
+            newConfiguration.title = title;
+            return new Builder(newConfiguration);
         }
 
         public Builder withMessage(String message) {
-            configuration.message = message;
-            return this;
+            AlertConfiguration newConfiguration = new AlertConfiguration(configuration);
+            newConfiguration.message = message;
+            return new Builder(newConfiguration);
         }
 
         public Builder withDuration(@Duration int duration) {
-            configuration.duration = duration;
-            return this;
+            AlertConfiguration newConfiguration = new AlertConfiguration(configuration);
+            newConfiguration.duration = duration;
+            return new Builder(newConfiguration);
         }
 
         public Builder withActionText(String actionText) {
-            configuration.actionText = actionText;
-            return this;
+            AlertConfiguration newConfiguration = new AlertConfiguration(configuration);
+            newConfiguration.actionText = actionText;
+            return new Builder(newConfiguration);
         }
 
         public Builder withCancelText(String cancelText) {
-            configuration.cancelText = cancelText;
-            return this;
+            AlertConfiguration newConfiguration = new AlertConfiguration(configuration);
+            newConfiguration.cancelText = cancelText;
+            return new Builder(newConfiguration);
         }
 
         public Builder withTitle(Context context, @StringRes int titleResId) {
-            configuration.title = context.getString(titleResId);
-            return this;
+            AlertConfiguration newConfiguration = new AlertConfiguration(configuration);
+            newConfiguration.title = context.getString(titleResId);
+            return new Builder(newConfiguration);
         }
 
         public Builder withMessage(Context context, @StringRes int messageResId) {
-            configuration.message = context.getString(messageResId);
-            return this;
+            AlertConfiguration newConfiguration = new AlertConfiguration(configuration);
+            newConfiguration.message = context.getString(messageResId);
+            return new Builder(newConfiguration);
         }
 
         public Builder withActionText(Context context, @StringRes int actionTextResId) {
-            configuration.actionText = context.getString(actionTextResId);
-            return this;
+            AlertConfiguration newConfiguration = new AlertConfiguration(configuration);
+            newConfiguration.actionText = context.getString(actionTextResId);
+            return new Builder(newConfiguration);
         }
 
         public Builder withCancelText(Context context, @StringRes int cancelTextResId) {
-            configuration.cancelText = context.getString(cancelTextResId);
-            return this;
+            AlertConfiguration newConfiguration = new AlertConfiguration(configuration);
+            newConfiguration.cancelText = context.getString(cancelTextResId);
+            return new Builder(newConfiguration);
         }
     }
 

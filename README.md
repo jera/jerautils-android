@@ -135,3 +135,16 @@ Alerts.showSnackBar(findViewById(R.id.root), builder
 ```
 
 ### <a id="pagination"></a> Pagination
+Use the ```Paginator``` helper together with a ```DataSource``` to handle
+paginated requests to populate a recycler view when it scrolls
+
+```java
+Paginator paginator = Paginator.with(YourDataSource())
+                .fromPage(1)
+                .withPageSize(20)
+                .over(recyclerView)
+                .start()
+```
+
+You can get information about the current status of the pagination with
+the instance of the Paginator if you need to.

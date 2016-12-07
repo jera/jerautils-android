@@ -1,4 +1,14 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+
+
+repositories {
+    jcenter()
+    maven {
+        url "http://dl.bintray.com/daividssilverio/maven"
+    }
+}
+
 
 android {
     compileSdkVersion 25
@@ -17,6 +27,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
 }
 
 dependencies {
@@ -25,6 +38,14 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     compile 'com.android.support:appcompat-v7:25.0.1'
+    compile 'com.android.support:recyclerview-v7:25.0.1'
+
     testCompile 'junit:junit:4.12'
+
+    compile "com.android.support:design:$support_version"
+    compile 'com.google.code.gson:gson:2.8.0'
+//    compile 'br.com.jera.jerautils-android:jerautils-android:0.1.0'
     compile project(':jerautils')
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    compile "org.jetbrains.anko:anko-sdk15:$anko_version"
 }

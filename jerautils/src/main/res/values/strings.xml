@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Jera Utils</string>
+    <string name="try_again">Tentar Novamente</string>
+    <string name="error_default">Oops...</string>
 </resources>

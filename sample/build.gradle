@@ -44,8 +44,9 @@ dependencies {
 
     compile "com.android.support:design:$support_version"
     compile 'com.google.code.gson:gson:2.8.0'
-//    compile 'br.com.jera.jerautils-android:jerautils-android:0.1.0'
-    compile project(':jerautils')
+    compile 'com.android.support:design:25.0.1'
+    compile 'br.com.jera.jerautils-android:jerautils-android:0.1.1'
+//    compile project(':jerautils')
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     compile "org.jetbrains.anko:anko-sdk15:$anko_version"
 }

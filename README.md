@@ -15,7 +15,7 @@ repositories {
 
 Add this to your dependencies
 ```groovy
-compile 'br.com.jera.jerautils-android:jerautils-android:0.1.1'
+compile 'br.com.jera.jerautils-android:jerautils-android:latest-version'
 ```
 
 ## Dependencies

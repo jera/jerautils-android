@@ -4,13 +4,18 @@ import android.R
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import br.com.jera.jerautils.paginations.adapters.BaseRecyclerViewAdapter
+import br.com.jera.jerautils.paginations.adapters.PaginatedAdapter
 import java.util.*
 
 /**
  * Created by daividsilverio on 02/12/16.
  */
-class AnyAdapter : BaseRecyclerViewAdapter<Thing> {
+class AnyAdapter : RecyclerView.Adapter<AnyViewHolder>, PaginatedAdapter<Thing> {
+
+
+    override fun onBindViewHolder(holder: AnyViewHolder?, position: Int) {
+        holder?.format(data[position])
+    }
 
     private var data: ArrayList<Thing>
 
@@ -20,12 +25,6 @@ class AnyAdapter : BaseRecyclerViewAdapter<Thing> {
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): AnyViewHolder {
         return AnyViewHolder(LayoutInflater.from(parent?.context).inflate(R.layout.simple_list_item_1, parent, false))
-    }
-
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int) {
-        if (holder is AnyViewHolder) {
-            holder.format(data[position])
-        }
     }
 
     override fun getItemCount(): Int {

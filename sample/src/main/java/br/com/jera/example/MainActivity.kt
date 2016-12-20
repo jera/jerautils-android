@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView
 import br.com.jera.example.dialogs.DialogsExample
 import br.com.jera.example.paginations.CustomPaginationExample
 import br.com.jera.example.paginations.DefaultPaginationExample
+import br.com.jera.example.paginations.JavaPaginationExample
 import br.com.jera.example.placeholders.PlaceholdersExample
 import br.com.jera.example.preferences.PreferencesExample
 
@@ -19,7 +20,8 @@ class MainActivity : AppCompatActivity() {
                 "Dialogs" to DialogsExample::class.java,
                 "Preferences" to PreferencesExample::class.java,
                 "Default Pagination" to DefaultPaginationExample::class.java,
-                "Custom Pagination" to CustomPaginationExample::class.java
+                "Custom Pagination" to CustomPaginationExample::class.java,
+                "Java Pagination" to JavaPaginationExample::class.java
         )
     }
 

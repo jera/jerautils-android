@@ -7,7 +7,7 @@ import android.support.v7.widget.RecyclerView;
 
 import java.util.List;
 
-import br.com.jera.jerautils.paginations.adapters.BaseRecyclerViewAdapter;
+import br.com.jera.jerautils.paginations.adapters.PaginatedAdapter;
 import br.com.jera.jerautils.paginations.adapters.PaginatedRecyclerViewAdapter;
 import br.com.jera.jerautils.paginations.adapters.PaginationViewProvider;
 import br.com.jera.jerautils.paginations.adapters.SimplePaginationViewProvider;
@@ -38,7 +38,7 @@ public class Paginator extends RecyclerView.OnScrollListener implements DataSour
     }
 
     public void start() {
-        PaginatedRecyclerViewAdapter recyclerViewAdapter = new PaginatedRecyclerViewAdapter((BaseRecyclerViewAdapter) recyclerView.getAdapter(), viewProvider);
+        PaginatedRecyclerViewAdapter recyclerViewAdapter = new PaginatedRecyclerViewAdapter(recyclerView.getAdapter(), viewProvider);
         recyclerView.setAdapter(recyclerViewAdapter);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -193,8 +193,8 @@ public class Paginator extends RecyclerView.OnScrollListener implements DataSour
         private void crashIfInvalid() {
             if (paginator.recyclerView == null || paginator.recyclerView.getAdapter() == null) {
                 throw new RuntimeException("You must the recyclerView with an Adapter to Paginate this");
-            } else if (!(paginator.recyclerView.getAdapter() instanceof BaseRecyclerViewAdapter)) {
-                throw new RuntimeException("Your recyclerview adapter must extend BaseRecyclerViewAdapter");
+            } else if (!(paginator.recyclerView.getAdapter() instanceof PaginatedAdapter)) {
+                throw new RuntimeException("Your recyclerview adapter must implement PaginatedAdapter");
             }
             if (paginator.dataSource == null) {
                 throw new RuntimeException("You must set a dataSource to Paginate something");

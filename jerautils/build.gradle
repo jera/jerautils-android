@@ -4,7 +4,7 @@ plugins {
 apply plugin: 'com.android.library'
 apply plugin: 'maven-publish'
 
-project.version = '0.1.2'
+project.version = '0.1.4'
 
 android {
     compileSdkVersion 25

@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -26,6 +27,7 @@ public class JavaPaginationExample extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private Paginator paginator;
+    private Button restartButton;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -34,9 +36,25 @@ public class JavaPaginationExample extends AppCompatActivity {
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(new SampleAdapter());
+        restartButton = (Button) findViewById(R.id.restart_pagination_button);
+        paginate();
+        restartButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                paginate();
+            }
+        });
+    }
+
+    public void paginate() {
+        if (paginator != null) {
+            paginator.detachPaginator();
+            ((SampleAdapter)recyclerView.getAdapter()).clear();
+            recyclerView.getAdapter().notifyDataSetChanged();
+        }
         paginator = Paginator.with(new FakeRequesterDataSource())
                 .fromPage(1)
-                .withPageSize(20)
+                .withPageSize(4)
                 .over(recyclerView)
                 .start();
     }
@@ -47,6 +65,10 @@ public class JavaPaginationExample extends AppCompatActivity {
 
         public SampleAdapter() {
             things = new ArrayList<>();
+        }
+
+        public void clear() {
+            things.clear();
         }
 
         @Override

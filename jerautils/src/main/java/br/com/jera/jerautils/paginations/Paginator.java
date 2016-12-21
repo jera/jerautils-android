@@ -37,7 +37,12 @@ public class Paginator extends RecyclerView.OnScrollListener implements DataSour
         this.dataSource = dataSource;
     }
 
+    public static PaginatorBuilder with(DataSource dataSource) {
+        return new PaginatorBuilder(dataSource);
+    }
+
     public void start() {
+        detachPaginator();
         PaginatedRecyclerViewAdapter recyclerViewAdapter = new PaginatedRecyclerViewAdapter(recyclerView.getAdapter(), viewProvider);
         recyclerView.setAdapter(recyclerViewAdapter);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -99,7 +104,6 @@ public class Paginator extends RecyclerView.OnScrollListener implements DataSour
         }
     }
 
-
     @Override
     public void onFailure(PaginationError paginationError, @Nullable PaginationInfo paginationInfo) {
         isLoading = false;
@@ -127,7 +131,7 @@ public class Paginator extends RecyclerView.OnScrollListener implements DataSour
         }
     }
 
-    private void detachPaginator() {
+    public void detachPaginator() {
         if (recyclerView != null) {
             recyclerView.clearOnScrollListeners();
             recyclerView.getAdapter().notifyDataSetChanged();
@@ -138,6 +142,15 @@ public class Paginator extends RecyclerView.OnScrollListener implements DataSour
         }
     }
 
+    public RecyclerView.Adapter getWrappedAdapter() {
+        if (recyclerView != null) {
+            if (recyclerView.getAdapter() instanceof PaginatedRecyclerViewAdapter) {
+                return ((PaginatedRecyclerViewAdapter) recyclerView.getAdapter()).getWrappedAdapter();
+            }
+        }
+        return null;
+    }
+
     private void addItemsToAdapter(List items) {
         if (recyclerView != null && recyclerView.getAdapter() != null) {
             ((PaginatedRecyclerViewAdapter) recyclerView.getAdapter()).addItems(items);
@@ -145,8 +158,8 @@ public class Paginator extends RecyclerView.OnScrollListener implements DataSour
         }
     }
 
-    public static PaginatorBuilder with(DataSource dataSource) {
-        return new PaginatorBuilder(dataSource);
+    public interface TryAgainCallback {
+        public void tryAgain();
     }
 
     public static class PaginatorBuilder {
@@ -212,10 +225,6 @@ public class Paginator extends RecyclerView.OnScrollListener implements DataSour
                 paginator.pageSize = DEFAULT_PAGE_SIZE;
             }
         }
-    }
-
-    public interface TryAgainCallback {
-        public void tryAgain();
     }
 
 }

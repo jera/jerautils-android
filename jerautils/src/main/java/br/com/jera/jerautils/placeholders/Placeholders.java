@@ -33,10 +33,17 @@ public class Placeholders {
     }
 
     public static PlaceholdersManager<ConfigurablePlaceholder> buildDefaultPlaceholdersManager(View contentView) {
-        return new PlaceholdersManager<ConfigurablePlaceholder>()
-                .add(LOADING, new SimplePlaceholder(contentView, defaultLoadingViewStubId, defaultLoadingMessageTextViewId))
-                .add(ERROR, new SimplePlaceholder(contentView, defaultErrorViewStubId, defaultErrorMessageTextViewId, defaultErrorButtonId))
-                .add(ERROR_WITH_ICON, new PlaceholderWithImage(contentView, defaultErrorWithIconViewStubId, defaultErrorMessageTextViewId, defaultErrorButtonId, defaultErrorIconId));
+        PlaceholdersManager<ConfigurablePlaceholder> placeholderManager = new PlaceholdersManager<>();
+        if (defaultLoadingViewStubId != 0 && defaultLoadingMessageTextViewId != 0) {
+            placeholderManager.add(LOADING, new SimplePlaceholder(contentView, defaultLoadingViewStubId, defaultLoadingMessageTextViewId));
+        }
+        if (defaultErrorViewStubId != 0 && defaultErrorMessageTextViewId != 0 && defaultErrorButtonId != 0) {
+            placeholderManager.add(ERROR, new SimplePlaceholder(contentView, defaultErrorViewStubId, defaultErrorMessageTextViewId, defaultErrorButtonId));
+        }
+        if (defaultErrorWithIconViewStubId != 0 && defaultErrorMessageTextViewId != 0 && defaultErrorButtonId != 0 && defaultErrorIconId != 0) {
+            placeholderManager.add(ERROR_WITH_ICON, new PlaceholderWithImage(contentView, defaultErrorWithIconViewStubId, defaultErrorMessageTextViewId, defaultErrorButtonId, defaultErrorIconId));
+        }
+        return placeholderManager;
     }
 
     public static View findChildOrBust(View view, int childViewId) {

@@ -7,7 +7,7 @@ import android.support.v7.widget.RecyclerView;
 
 import java.util.List;
 
-import br.com.jera.jerautils.paginations.adapters.BaseRecyclerViewAdapter;
+import br.com.jera.jerautils.paginations.adapters.PaginatedAdapter;
 import br.com.jera.jerautils.paginations.adapters.PaginatedRecyclerViewAdapter;
 import br.com.jera.jerautils.paginations.adapters.PaginationViewProvider;
 import br.com.jera.jerautils.paginations.adapters.SimplePaginationViewProvider;
@@ -37,8 +37,13 @@ public class Paginator extends RecyclerView.OnScrollListener implements DataSour
         this.dataSource = dataSource;
     }
 
+    public static PaginatorBuilder with(DataSource dataSource) {
+        return new PaginatorBuilder(dataSource);
+    }
+
     public void start() {
-        PaginatedRecyclerViewAdapter recyclerViewAdapter = new PaginatedRecyclerViewAdapter((BaseRecyclerViewAdapter) recyclerView.getAdapter(), viewProvider);
+        detachPaginator();
+        PaginatedRecyclerViewAdapter recyclerViewAdapter = new PaginatedRecyclerViewAdapter(recyclerView.getAdapter(), viewProvider);
         recyclerView.setAdapter(recyclerViewAdapter);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -56,9 +61,15 @@ public class Paginator extends RecyclerView.OnScrollListener implements DataSour
         if (isLoading) return;
         isLoading = true;
         hasError = false;
-        ((PaginatedRecyclerViewAdapter) recyclerView.getAdapter()).setLoading(true);
-        recyclerView.getAdapter().notifyDataSetChanged();
-        dataSource.fetchData(currentPage, pageSize, this);
+        if (isWrappedAdapter()) {
+            ((PaginatedRecyclerViewAdapter) recyclerView.getAdapter()).setLoading(true);
+            recyclerView.getAdapter().notifyDataSetChanged();
+            dataSource.fetchData(currentPage, pageSize, this);
+        }
+    }
+
+    private boolean isWrappedAdapter() {
+        return recyclerView.getAdapter() != null && recyclerView.getAdapter() instanceof PaginatedRecyclerViewAdapter;
     }
 
     private boolean shouldRequestMore() {
@@ -90,7 +101,9 @@ public class Paginator extends RecyclerView.OnScrollListener implements DataSour
     @Override
     public void onSuccess(@NonNull List items, @Nullable PaginationInfo paginationInfo) {
         isLoading = false;
-        ((PaginatedRecyclerViewAdapter) recyclerView.getAdapter()).setLoading(isLoading);
+        if (isWrappedAdapter()) {
+            ((PaginatedRecyclerViewAdapter) recyclerView.getAdapter()).setLoading(isLoading);
+        }
         if (!items.isEmpty()) {
             addItemsToAdapter(items);
             updatePaginationInfo(paginationInfo);
@@ -99,12 +112,11 @@ public class Paginator extends RecyclerView.OnScrollListener implements DataSour
         }
     }
 
-
     @Override
     public void onFailure(PaginationError paginationError, @Nullable PaginationInfo paginationInfo) {
         isLoading = false;
         hasError = true;
-        if (recyclerView.getAdapter() != null) {
+        if (isWrappedAdapter()) {
             ((PaginatedRecyclerViewAdapter) recyclerView.getAdapter())
                     .setError(hasError, paginationError, new TryAgainCallback() {
                         @Override
@@ -127,7 +139,7 @@ public class Paginator extends RecyclerView.OnScrollListener implements DataSour
         }
     }
 
-    private void detachPaginator() {
+    public void detachPaginator() {
         if (recyclerView != null) {
             recyclerView.clearOnScrollListeners();
             recyclerView.getAdapter().notifyDataSetChanged();
@@ -138,15 +150,24 @@ public class Paginator extends RecyclerView.OnScrollListener implements DataSour
         }
     }
 
+    public RecyclerView.Adapter getWrappedAdapter() {
+        if (recyclerView != null) {
+            if (recyclerView.getAdapter() instanceof PaginatedRecyclerViewAdapter) {
+                return ((PaginatedRecyclerViewAdapter) recyclerView.getAdapter()).getWrappedAdapter();
+            }
+        }
+        return null;
+    }
+
     private void addItemsToAdapter(List items) {
-        if (recyclerView != null && recyclerView.getAdapter() != null) {
+        if (recyclerView != null && isWrappedAdapter()) {
             ((PaginatedRecyclerViewAdapter) recyclerView.getAdapter()).addItems(items);
             recyclerView.getAdapter().notifyDataSetChanged();
         }
     }
 
-    public static PaginatorBuilder with(DataSource dataSource) {
-        return new PaginatorBuilder(dataSource);
+    public interface TryAgainCallback {
+        public void tryAgain();
     }
 
     public static class PaginatorBuilder {
@@ -193,8 +214,8 @@ public class Paginator extends RecyclerView.OnScrollListener implements DataSour
         private void crashIfInvalid() {
             if (paginator.recyclerView == null || paginator.recyclerView.getAdapter() == null) {
                 throw new RuntimeException("You must the recyclerView with an Adapter to Paginate this");
-            } else if (!(paginator.recyclerView.getAdapter() instanceof BaseRecyclerViewAdapter)) {
-                throw new RuntimeException("Your recyclerview adapter must extend BaseRecyclerViewAdapter");
+            } else if (!(paginator.recyclerView.getAdapter() instanceof PaginatedAdapter)) {
+                throw new RuntimeException("Your recyclerview adapter must implement PaginatedAdapter");
             }
             if (paginator.dataSource == null) {
                 throw new RuntimeException("You must set a dataSource to Paginate something");
@@ -212,10 +233,6 @@ public class Paginator extends RecyclerView.OnScrollListener implements DataSour
                 paginator.pageSize = DEFAULT_PAGE_SIZE;
             }
         }
-    }
-
-    public interface TryAgainCallback {
-        public void tryAgain();
     }
 
 }

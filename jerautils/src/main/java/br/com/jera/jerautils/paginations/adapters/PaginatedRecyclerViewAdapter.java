@@ -13,7 +13,7 @@ import br.com.jera.jerautils.paginations.interfaces.PaginationError;
  * Created by daividsilverio on 30/11/16.
  */
 
-public class PaginatedRecyclerViewAdapter<T extends BaseRecyclerViewAdapter> extends RecyclerView.Adapter implements PaginatedAdapter {
+public class PaginatedRecyclerViewAdapter<T extends RecyclerView.Adapter & PaginatedAdapter> extends RecyclerView.Adapter implements PaginatedAdapter {
 
     private static final int VIEW_TYPE_LOADING = Integer.MAX_VALUE / 2;
     private static final int VIEW_TYPE_ERROR = Integer.MAX_VALUE / 2 - 1;

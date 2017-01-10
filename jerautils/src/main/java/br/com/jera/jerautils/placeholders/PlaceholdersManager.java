@@ -28,6 +28,9 @@ public class PlaceholdersManager<T extends Placeholder> {
     public T show(String placeholderName) {
         hideAll();
         T placeholder = placeholders.get(placeholderName);
+        if (placeholder == null) {
+            throw new RuntimeException("Add a placeholder to your placeholder manager before using it.");
+        }
         placeholder.getView().setVisibility(View.VISIBLE);
         return placeholder;
     }

@@ -21,6 +21,7 @@
         <activity android:name=".preferences.PreferencesExample" />
         <activity android:name=".paginations.DefaultPaginationExample" />
         <activity android:name=".paginations.CustomPaginationExample" />
+        <activity android:name=".paginations.JavaPaginationExample" />
     </application>
 
 </manifest>

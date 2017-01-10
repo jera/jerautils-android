@@ -61,9 +61,15 @@ public class Paginator extends RecyclerView.OnScrollListener implements DataSour
         if (isLoading) return;
         isLoading = true;
         hasError = false;
-        ((PaginatedRecyclerViewAdapter) recyclerView.getAdapter()).setLoading(true);
-        recyclerView.getAdapter().notifyDataSetChanged();
-        dataSource.fetchData(currentPage, pageSize, this);
+        if (isWrappedAdapter()) {
+            ((PaginatedRecyclerViewAdapter) recyclerView.getAdapter()).setLoading(true);
+            recyclerView.getAdapter().notifyDataSetChanged();
+            dataSource.fetchData(currentPage, pageSize, this);
+        }
+    }
+
+    private boolean isWrappedAdapter() {
+        return recyclerView.getAdapter() != null && recyclerView.getAdapter() instanceof PaginatedRecyclerViewAdapter;
     }
 
     private boolean shouldRequestMore() {
@@ -95,7 +101,9 @@ public class Paginator extends RecyclerView.OnScrollListener implements DataSour
     @Override
     public void onSuccess(@NonNull List items, @Nullable PaginationInfo paginationInfo) {
         isLoading = false;
-        ((PaginatedRecyclerViewAdapter) recyclerView.getAdapter()).setLoading(isLoading);
+        if (isWrappedAdapter()) {
+            ((PaginatedRecyclerViewAdapter) recyclerView.getAdapter()).setLoading(isLoading);
+        }
         if (!items.isEmpty()) {
             addItemsToAdapter(items);
             updatePaginationInfo(paginationInfo);
@@ -108,7 +116,7 @@ public class Paginator extends RecyclerView.OnScrollListener implements DataSour
     public void onFailure(PaginationError paginationError, @Nullable PaginationInfo paginationInfo) {
         isLoading = false;
         hasError = true;
-        if (recyclerView.getAdapter() != null) {
+        if (isWrappedAdapter()) {
             ((PaginatedRecyclerViewAdapter) recyclerView.getAdapter())
                     .setError(hasError, paginationError, new TryAgainCallback() {
                         @Override
@@ -152,7 +160,7 @@ public class Paginator extends RecyclerView.OnScrollListener implements DataSour
     }
 
     private void addItemsToAdapter(List items) {
-        if (recyclerView != null && recyclerView.getAdapter() != null) {
+        if (recyclerView != null && isWrappedAdapter()) {
             ((PaginatedRecyclerViewAdapter) recyclerView.getAdapter()).addItems(items);
             recyclerView.getAdapter().notifyDataSetChanged();
         }

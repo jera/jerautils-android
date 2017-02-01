@@ -7,9 +7,7 @@ alerts and preferences.
 Add this repository (Temporary) to your root build.gradle
 ```groovy
 repositories {
-        maven {
-            url "http://dl.bintray.com/daividssilverio/maven"
-        }
+        jcenter()
     }
 ```
 

@@ -31,10 +31,12 @@ compile "com.android.support:design:x.y.z"
 * [Placeholders](#placeholders)
 
 ### <a id="preferences"></a> Preferences
-Init Preferences once with a ContextProvider and a JsonConverter in
+Init the Preferences singleton once with the Preferences Name you prefere, a ContextProvider and a JsonConverter in
 your application, activity, whatever:
 ```groovy
-    Preferences.init(new Preferences.ContextProvider() {
+    Preferences.initDefaultInstance(
+    new Preferences("APP_PREFERENCES",
+            new Preferences.ContextProvider() {
                 @Override
                 public Context getContext() {
                     return this; //supposing you are inside your application class
@@ -54,18 +56,18 @@ your application, activity, whatever:
                 public <T> T fromJson(@NonNull String obj, @NonNull Type type) {
                     return gson.fromJson(obj, type);
                 }
-            });
+            }));
 ```
 
 
 Then use it as you would regularly, but with the Preferences Facade:
 ```groovy
-    Preferences.putBoolean("BOOL_KEY", true);
-    Preferences.putFloat("FLOAT_KEY", 0.4f);
-    Preferences.putInt("INT_KEY", 1);
-    Preferences.putLong("LONG_KEY", 10);
-    Preferences.putString("STRING_KEY", "String");
-    Preferences.putObject("SERIALIZABLE_OBJECT", new Date());
+    Preferences.getDefaultInstance().putBoolean("BOOL_KEY", true);
+    Preferences.getDefaultInstance().putFloat("FLOAT_KEY", 0.4f);
+    Preferences.getDefaultInstance().putInt("INT_KEY", 1);
+    Preferences.getDefaultInstance().putLong("LONG_KEY", 10);
+    Preferences.getDefaultInstance().putString("STRING_KEY", "String");
+    Preferences.getDefaultInstance().putObject("SERIALIZABLE_OBJECT", new Date());
 ```
 
 

@@ -13,6 +13,7 @@ class ExampleApplication : Application() {
 
     companion object {
         val gson = Gson()
+        private val APP_PREFERENCES = "APP_PREFERENCES"
     }
 
     override fun onCreate() {
@@ -27,18 +28,20 @@ class ExampleApplication : Application() {
                 .withDefaultErrorIconId(R.id.image_error_icon)
                 .build())
 
-        Preferences.init({ this@ExampleApplication }, object : Preferences.JsonConverter {
-            override fun <T : Any?> fromJson(obj: String, type: Type): T {
-                return ExampleApplication.gson.fromJson<T>(obj, type)
-            }
+        Preferences.initDefaultInstance(Preferences(APP_PREFERENCES, { this@ExampleApplication },
+                object : Preferences.JsonConverter {
+                    override fun <T : Any?> fromJson(obj: String, type: Type): T {
+                        return ExampleApplication.gson.fromJson<T>(obj, type)
+                    }
 
-            override fun toJson(obj: Any?): String {
-                return ExampleApplication.gson.toJson(obj)
-            }
+                    override fun toJson(obj: Any?): String {
+                        return ExampleApplication.gson.toJson(obj)
+                    }
 
-            override fun <T : Any?> fromJson(obj: String, clazz: Class<T>): T {
-                return ExampleApplication.gson.fromJson<T>(obj, clazz)
-            }
-        })
+                    override fun <T : Any?> fromJson(obj: String, clazz: Class<T>): T {
+                        return ExampleApplication.gson.fromJson<T>(obj, clazz)
+                    }
+                })
+        )
     }
 }

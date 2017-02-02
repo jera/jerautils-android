@@ -14,113 +14,120 @@ import java.util.Set;
 
 public class Preferences {
 
-    private static final String PREFERENCES_NAME = "APP_PREFERENCES";
-    private static Preferences instance;
     private final ContextProvider contextProvider;
     private final JsonConverter converter;
+    private final String preferencesName;
 
-    private Preferences(ContextProvider context, JsonConverter converter) {
-        this.contextProvider = context;
-        this.converter = converter;
+    private static Preferences defaultInstance;
+
+    public Preferences(String preferencesName, ContextProvider contextProvider, JsonConverter jsonConverter) {
+        this.preferencesName = preferencesName;
+        this.contextProvider = contextProvider;
+        this.converter = jsonConverter;
     }
 
-    private static SharedPreferences getPreferences() {
-        if (instance == null) {
-            throw new RuntimeException("Did you initialize the Preference Utils?");
+    public static void initDefaultInstance(Preferences preferences) {
+        defaultInstance = preferences;
+    }
+
+    public static Preferences getDefaultInstance() {
+        if (defaultInstance == null) {
+            throw new RuntimeException("You have to instantiate the default instance before using it. Use initDefaultInstance(Preferences) for it.");
         }
-        return instance.contextProvider.getContext().getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
+        return defaultInstance;
     }
 
-    private static JsonConverter getJsonConverter() {
-        if (instance == null) {
-            throw new RuntimeException(("Did you initialize the Preference Utils?"));
-        }
-        return instance.converter;
+    private SharedPreferences getPreferences() {
+        return contextProvider.getContext().getSharedPreferences(preferencesName, Context.MODE_PRIVATE);
+    }
+
+    private JsonConverter getJsonConverter() {
+        return converter;
     }
 
 
-    public static void putObject(String key, Object value) {
+    public void putObject(String key, Object value) {
         getPreferences().edit().putString(key, getJsonConverter().toJson(value)).commit();
     }
 
-    public static <T> T get(String key, Class<T> clazz) {
+    public <T> T get(String key, Class<T> clazz) {
         return getJsonConverter().fromJson(getPreferences().getString(key, null), clazz);
     }
 
-    public static <T> T get(String key, Type type) {
+    public <T> T get(String key, Type type) {
         return getJsonConverter().fromJson(getPreferences().getString(key, null), type);
     }
 
-    public static boolean contains(String key) {
+    public boolean contains(String key) {
         return getPreferences().contains(key);
     }
 
-    public static void remove(String key) {
+    public void remove(String key) {
         getPreferences().edit().remove(key).commit();
     }
 
-    public static void putString(String key, @Nullable String string) {
+    public void putString(String key, @Nullable String string) {
         getPreferences().edit().putString(key, string).commit();
     }
 
-    public static void putStringSet(String key, @Nullable Set<String> stringSet) {
+    public void putStringSet(String key, @Nullable Set<String> stringSet) {
         getPreferences().edit().putStringSet(key, stringSet).commit();
     }
 
-    public static void putInt(String key, int anInt) {
+    public void putInt(String key, int anInt) {
         getPreferences().edit().putInt(key, anInt).commit();
     }
 
-    public static void putLong(String key, long anLong) {
+    public void putLong(String key, long anLong) {
         getPreferences().edit().putLong(key, anLong).commit();
     }
 
-    public static void putFloat(String key, float aFloat) {
+    public void putFloat(String key, float aFloat) {
         getPreferences().edit().putFloat(key, aFloat).commit();
     }
 
-    public static void putBoolean(String key, boolean aBoolean) {
+    public void putBoolean(String key, boolean aBoolean) {
         getPreferences().edit().putBoolean(key, aBoolean).commit();
     }
 
     @NonNull
-    public static String getString(String key, String defaultString) {
+    public String getString(String key, String defaultString) {
         return getPreferences().getString(key, defaultString);
     }
 
     @NonNull
-    public static Set<String> getStringSet(String key, Set<String> defaultStringSet) {
+    public Set<String> getStringSet(String key, Set<String> defaultStringSet) {
         return getPreferences().getStringSet(key, defaultStringSet);
     }
 
-    public static int getInt(String key, int defaultInt) {
+    public int getInt(String key, int defaultInt) {
         return getPreferences().getInt(key, defaultInt);
     }
 
-    public static long getLong(String key, long defaultLong) {
+    public long getLong(String key, long defaultLong) {
         return getPreferences().getLong(key, defaultLong);
     }
 
-    public static float getFloat(String key, float defaultFloat) {
+    public float getFloat(String key, float defaultFloat) {
         return getPreferences().getFloat(key, defaultFloat);
     }
 
-    public static boolean getBoolean(String key, boolean defaultBoolean) {
+    public boolean getBoolean(String key, boolean defaultBoolean) {
         return getPreferences().getBoolean(key, defaultBoolean);
     }
 
     @Nullable
-    public static String getString(String key) {
+    public String getString(String key) {
         return getPreferences().getString(key, null);
     }
 
     @Nullable
-    public static Set<String> getStringSet(String key) {
+    public Set<String> getStringSet(String key) {
         return getPreferences().getStringSet(key, null);
     }
 
     @Nullable
-    public static Integer getInt(String key) {
+    public Integer getInt(String key) {
         if (contains(key)) {
             return getPreferences().getInt(key, 0);
         }
@@ -128,7 +135,7 @@ public class Preferences {
     }
 
     @Nullable
-    public static Long getLong(String key) {
+    public Long getLong(String key) {
         if (getPreferences().contains(key)) {
             return getPreferences().getLong(key, 0);
         }
@@ -136,7 +143,7 @@ public class Preferences {
     }
 
     @Nullable
-    public static Float getFloat(String key) {
+    public Float getFloat(String key) {
         if (getPreferences().contains(key)) {
             return getPreferences().getFloat(key, 0);
         }
@@ -144,18 +151,11 @@ public class Preferences {
     }
 
     @Nullable
-    public static Boolean getBoolean(String key) {
+    public Boolean getBoolean(String key) {
         if (getPreferences().contains(key)) {
             return getPreferences().getBoolean(key, false);
         }
         return null;
-    }
-
-    public static void init(ContextProvider contextProvider, JsonConverter converter) {
-        if (contextProvider == null || converter == null) {
-            throw new RuntimeException("Dammnn Son! Why!?? Just, Why!?");
-        }
-        instance = new Preferences(contextProvider, converter);
     }
 
     public interface JsonConverter {
